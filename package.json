@@ -1,0 +1,21 @@
+{
+  "name": "minecraft-mca",
+  "version": "0.0.1",
+  "description": "minecraft .mca region data file pure js parser",
+  "main": "inflate.min.js",
+  "scripts": {
+    "start": "beefy demo.js"
+  },
+  "repository": "",
+  "author": "Jason Livesay <ithkuil@gmail.com>, Max Ogden <max@maxogden.com>",
+  "license": "BSD",
+  "dependencies": {
+    "minecraft-blockinfo": "0.0.0",
+    "minecraft-nbt": "0.0.2",
+    "minecraft-chunk": "0.0.1"
+  },
+  "devDependencies": {
+    "minecraft-region": "0.0.2",
+    "binary-xhr": "0.0.1"
+  }
+}
