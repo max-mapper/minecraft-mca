@@ -23,7 +23,6 @@ RegionRenderer.prototype.load = function() {
   minz = camPos.chunkZ - size;
   maxx = camPos.chunkX + size;
   maxz = camPos.chunkZ + size;
-  console.log('minx is ' + minx + ' and minz is ' + minz);
   for (x = _i = minx; minx <= maxx ? _i <= maxx : _i >= maxx; x = minx <= maxx ? ++_i : --_i) {
     for (z = _j = minz; minz <= maxz ? _j <= maxz : _j >= maxz; z = minz <= maxz ? ++_j : --_j) {
       region = this.region;
@@ -31,7 +30,7 @@ RegionRenderer.prototype.load = function() {
         try {
           chunk = region.getChunk(x, z);
           if (chunk != null) {
-            this.loadChunk(chunk, x, z);
+            this.loadChunk(chunk, x, z, this.options.onVoxel);
           } else {
             console.log('chunk at ' + x + ',' + z + ' is undefined');
           }
@@ -71,7 +70,7 @@ RegionRenderer.prototype.mcCoordsToWorld = function(x, y, z) {
   return ret;
 };
 
-RegionRenderer.prototype.loadChunk = function(chunk, chunkX, chunkZ) {
+RegionRenderer.prototype.loadChunk = function(chunk, chunkX, chunkZ, onVoxel) {
   var attributes, chunkSize, colorArray, count, cube, e, f, geometry, i, index, indices, left, mat, material, mesh, options, start, startedIndex, uvArray, vertexIndexArray, vertexPositionArray, verts, view, _i, _j, _k, _l, _len, _m, _n, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
 
   options = {
@@ -83,8 +82,11 @@ RegionRenderer.prototype.loadChunk = function(chunk, chunkX, chunkZ) {
     chunkZ: chunkZ
   };
   view = mcChunk(options);
+  var voxels = []
   try {
-    view.extractChunk();
+    view.extractChunk(function(x, y, z, type) {
+      onVoxel(x, y, z, type, chunkX, chunkZ)
+    });
   } catch (_error) {
     e = _error;
     console.log("Error in extractChunk");
@@ -92,5 +94,4 @@ RegionRenderer.prototype.loadChunk = function(chunk, chunkX, chunkZ) {
     console.log(e.stack);
   }
   
-  console.log(view)
 };
