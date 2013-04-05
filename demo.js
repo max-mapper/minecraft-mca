@@ -26,10 +26,7 @@ binaryXHR('r.0.0.mca', function(err, data) {
   if (err) return console.error(err)
   var region = mcRegion(data)
   var opts = {x: playerPos.x, y: playerPos.y, z: playerPos.z, size: game.chunkDistance, ymin: 0, onVoxel: function(x, y, z, type, offsetX, offsetZ) {
-    var idx = materials.indexOf(type)
-    if (idx) idx = idx + 1
-    if (type === 'grass') idx = 1
-    game.setBlock([(offsetX * 16) + x, y, (offsetZ * 16) + z], idx || 1)
+    game.setBlock([(offsetX * 16) + x, y, (offsetZ * 16) + z], type)
   }}
   var view = render(region, opts)
 })
