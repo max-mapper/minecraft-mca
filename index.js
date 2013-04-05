@@ -7,6 +7,33 @@ module.exports = function(region, options) {
   return new RegionRenderer(region, options)
 }
 
+module.exports.mcCoordsToWorld = mcCoordsToWorld
+
+function mcCoordsToWorld(x, y, z) {
+  var chunkX, chunkZ, posX, posZ, ret, verts;
+
+  chunkX = mod(Math.floor(x / 16), 32)
+  chunkZ = mod(Math.floor(z / 16), 32)
+  posX = mod(mod(x, 32 * 16), 16)
+  posZ = mod(mod(z, 32 * 16), 16)
+  posX = Math.abs(posX);
+  posZ = Math.abs(posZ);
+  chunkX = Math.abs(chunkX);
+  chunkZ = Math.abs(chunkZ);
+  verts = mcChunk.calcPoint([posX, y, posZ], {
+    chunkX: chunkX,
+    chunkZ: chunkZ
+  });
+  ret = {
+    x: verts[0],
+    y: verts[1],
+    z: verts[2],
+    chunkX: chunkX,
+    chunkZ: chunkZ
+  };
+  return ret;
+};
+
 function RegionRenderer(region, options) {
   this.region = region
   this.options = options
@@ -17,7 +44,7 @@ RegionRenderer.prototype.load = function() {
   var camPos, chunk, e, maxx, maxz, minx, minz, region, size, startX, startZ, x, z, _i, _j;
   startX = this.options.x * 1;
   startZ = this.options.z * 1;
-  camPos = this.mcCoordsToWorld(startX, this.options.y * 1, startZ);
+  camPos = mcCoordsToWorld(startX, this.options.y * 1, startZ);
   size = this.options.size * 1;
   minx = camPos.chunkX - size;
   minz = camPos.chunkZ - size;
@@ -43,31 +70,6 @@ RegionRenderer.prototype.load = function() {
     }
   }
   return
-};
-
-RegionRenderer.prototype.mcCoordsToWorld = function(x, y, z) {
-  var chunkX, chunkZ, posX, posZ, ret, verts;
-
-  chunkX = mod(Math.floor(x / 16), 32)
-  chunkZ = mod(Math.floor(z / 16), 32)
-  posX = mod(mod(x, 32 * 16), 16)
-  posZ = mod(mod(z, 32 * 16), 16)
-  posX = Math.abs(posX);
-  posZ = Math.abs(posZ);
-  chunkX = Math.abs(chunkX);
-  chunkZ = Math.abs(chunkZ);
-  verts = mcChunk.calcPoint([posX, y, posZ], {
-    chunkX: chunkX,
-    chunkZ: chunkZ
-  });
-  ret = {
-    x: verts[0],
-    y: verts[1],
-    z: verts[2],
-    chunkX: chunkX,
-    chunkZ: chunkZ
-  };
-  return ret;
 };
 
 RegionRenderer.prototype.loadChunk = function(chunk, chunkX, chunkZ, onVoxel) {
