@@ -2,9 +2,10 @@
   "name": "minecraft-mca",
   "version": "0.2.0",
   "description": "minecraft .mca region data file pure js parser",
-  "main": "inflate.min.js",
+  "main": "index.js",
   "scripts": {
-    "start": "beefy demo.js"
+    "start": "beefy demo.js",
+    "test": "node test.js"
   },
   "repository": "",
   "author": "Jason Livesay <ithkuil@gmail.com>, Max Ogden <max@maxogden.com>",
