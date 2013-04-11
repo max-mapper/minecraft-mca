@@ -20,6 +20,8 @@
     "binary-xhr": "0.0.1",
     "voxel-hello-world": "~0.3.0",
     "voxel-engine": "~0.16.3",
-    "voxel-fly": "~0.1.0"
+    "voxel-fly": "~0.1.0",
+    "browserify": "~2.12.0",
+    "beefy": "0.0.11"
   }
 }
