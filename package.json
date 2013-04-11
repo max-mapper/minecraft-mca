@@ -1,6 +1,6 @@
 {
   "name": "minecraft-mca",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "minecraft .mca region data file pure js parser",
   "main": "inflate.min.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "minecraft-chunk": "0.1.0"
   },
   "devDependencies": {
-    "minecraft-region": "0.0.2",
+    "minecraft-region": "0.1.0",
     "binary-xhr": "0.0.1",
     "voxel-hello-world": "~0.3.0",
     "voxel-engine": "~0.16.3",
