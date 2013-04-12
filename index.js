@@ -1,5 +1,4 @@
 var mcChunk = require('minecraft-chunk')
-var blockInfo = require('minecraft-blockinfo')
 
 module.exports = function(region, options) {
   return new RegionRenderer(region, options)
@@ -48,10 +47,8 @@ RegionRenderer.prototype.load = function() {
   return
 };
 
-RegionRenderer.prototype.loadChunk = function(chunk, chunkX, chunkZ, onVoxel) {
-  var attributes, chunkSize, colorArray, count, cube, e, f, geometry, i, index, indices, left, mat, material, mesh, options, start, startedIndex, uvArray, vertexIndexArray, vertexPositionArray, verts, view, _i, _j, _k, _l, _len, _m, _n, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
-
-  options = {
+RegionRenderer.prototype.initializeChunk = function(chunk, chunkX, chunkZ) {
+  var options = {
     nbt: chunk,
     ymin: this.options.ymin,
     showstuff: false,
@@ -59,7 +56,13 @@ RegionRenderer.prototype.loadChunk = function(chunk, chunkX, chunkZ, onVoxel) {
     chunkX: chunkX,
     chunkZ: chunkZ
   };
-  view = mcChunk(options);
+  return mcChunk(options)
+}
+
+RegionRenderer.prototype.loadChunk = function(chunk, chunkX, chunkZ, onVoxel) {
+  var attributes, chunkSize, colorArray, count, cube, e, f, geometry, i, index, indices, left, mat, material, mesh, options, start, startedIndex, uvArray, vertexIndexArray, vertexPositionArray, verts, view, _i, _j, _k, _l, _len, _m, _n, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+
+  var view = this.initializeChunk(chunk, chunkX, chunkZ)
   var voxels = []
   try {
     view.extractChunk(function(x, y, z, type) {

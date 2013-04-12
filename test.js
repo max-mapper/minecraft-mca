@@ -1,3 +1,4 @@
+// [108, 71, 276]
 var render = require('./')
 var worldOrigin = [122, 72, 286]
 var regionX = Math.floor((worldOrigin[0] >> 4) / 32)
@@ -37,9 +38,9 @@ function loadRegion(data) {
 
 function toArrayBuffer(buffer) {
   var ab = new ArrayBuffer(buffer.length)
-  var view = new Uint8Array(ab)
+  var typedarray = new Uint8Array(ab)
   for (var i = 0; i < buffer.length; ++i) {
-    view[i] = buffer[i]
+    typedarray[i] = buffer[i]
   }
   return ab
 }
