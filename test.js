@@ -1,5 +1,5 @@
 var render = require('./')
-var worldOrigin = [-3, 69, -12]
+var worldOrigin = [122, 72, 286]
 var regionX = Math.floor((worldOrigin[0] >> 4) / 32)
 var regionZ = Math.floor((worldOrigin[2] >> 4) / 32)
 var regionFile = 'r.' + regionX + '.' + regionZ + '.mca'

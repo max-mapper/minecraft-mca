@@ -5,8 +5,8 @@ var binaryXHR = require('binary-xhr')
 var fly = require('voxel-fly')
 
 var textures = "http://commondatastorage.googleapis.com/voxeltextures/"
-var materials = [["grass", "grass", "grass"], "dirt", "stone", "sand", "gravel", "log", "leaves", "coal", "cobble", "water2", "mossy", "glass", "glasspane", "cobblestairs", "iron"]
-var pos = [-29, 81, -17]
+var materials = [["grass","grass","grass"],"lava2", "stone", "dirt", "coal", "gravel", "iron", "sandstone", "brick", "glass", "torch", "wool", "glasspane", "log", "woodstairs", "wood", "fence", "woodendoor", "cobble", "water2", "leaves", "mossy", "spawner", "diamond"]
+var pos = [122, 72, 286]
 var regionX = Math.floor((pos[0] >> 4) / 32)
 var regionZ = Math.floor((pos[2] >> 4) / 32)
 var regionFile = 'r.' + regionX + '.' + regionZ + '.mca'
