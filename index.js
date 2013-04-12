@@ -1,8 +1,6 @@
 var mcChunk = require('minecraft-chunk')
 var blockInfo = require('minecraft-blockinfo')
 
-function mod (num, n) { return ( num < 0 ? (num % n) + n : num % n) }
-
 module.exports = function(region, options) {
   return new RegionRenderer(region, options)
 }
@@ -24,11 +22,10 @@ RegionRenderer.prototype.load = function() {
   var chunkPos = getChunk(this.options.x, this.options.z)
   
   size = this.options.size * 1;
-  minx = chunkPos[0] - size;
-  minz = chunkPos[1] - size;
-  maxx = chunkPos[0] + size;
-  maxz = chunkPos[1] + size;
-  // console.log('from', minx, minz, 'to', maxx, maxz)
+  minx = (chunkPos[0]) - size;
+  minz = (chunkPos[1]) - size;
+  maxx = (chunkPos[0]) + size;
+  maxz = (chunkPos[1]) + size;
   for (x = _i = minx; minx <= maxx ? _i <= maxx : _i >= maxx; x = minx <= maxx ? ++_i : --_i) {
     for (z = _j = minz; minz <= maxz ? _j <= maxz : _j >= maxz; z = minz <= maxz ? ++_j : --_j) {
       region = this.region;

@@ -5,15 +5,17 @@ var binaryXHR = require('binary-xhr')
 var fly = require('voxel-fly')
 
 var textures = "http://commondatastorage.googleapis.com/voxeltextures/"
-var materials = [['grass', 'grass', 'grass'], 'stone', 'lava2', 'iron', 'gravel', 'coal', 'dirt', 'water2', 'wood', 'cobble', 'leaves', 'log', 'mossy']
-var pos = [-86, 37, 233]
-var regionFile = 'r.-1.0.mca'
+var materials = [["grass", "grass", "grass"], "dirt", "stone", "sand", "gravel", "log", "leaves", "coal", "cobble", "water2", "mossy", "glass", "glasspane", "cobblestairs", "iron"]
+var pos = [-29, 81, -17]
+var regionX = Math.floor((pos[0] >> 4) / 32)
+var regionZ = Math.floor((pos[2] >> 4) / 32)
+var regionFile = 'r.' + regionX + '.' + regionZ + '.mca'
 
 var game = require('voxel-hello-world')({
   generate: function(x, y, z) { return 0; },
   texturePath: './textures/',
   playerSkin: textures + 'player.png',
-  chunkDistance: 2,
+  chunkDistance: 4,
   arrayType: Float32Array,
   worldOrigin: pos,
   materials: materials
