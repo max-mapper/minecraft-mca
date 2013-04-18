@@ -11,10 +11,13 @@ minecraft is property of Mojang AB
 var readMCA = require('minecraft-mca')
 var mcRegion = require('minecraft-region')
 var region = mcRegion(binaryRegionData)
-var opts = {x: worldOrigin[0], y: worldOrigin[1], z: worldOrigin[2], size: game.chunkDistance, ymin: 0, onVoxel: function(x, y, z, type, offsetX, offsetZ) {
+var opts = {ymin: 0, onVoxel: function(x, y, z, type, offsetX, offsetZ) {
   game.setBlock([(offsetX * 16) + x, y, (offsetZ * 16) + z], type)
 }}
-var view = render(region, opts)
+var mca = readMCA(region, opts)
+mca.loadAll() // loads all 1024 chunks in this region
+mca.loadNearby(0, 0, 1) // loads 1 in each direction
+mca.loadChunk(4, 4) // loads single chunk
 ```
 
 this module works with [minecraft-chunk](http://github.com/maxogden/minecraft-chunk) and is used by [minecraft-mca](http://github.com/maxogden/minecraft-mca)

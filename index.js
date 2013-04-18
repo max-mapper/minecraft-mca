@@ -4,48 +4,43 @@ module.exports = function(region, options) {
   return new RegionRenderer(region, options)
 }
 
-module.exports.getChunk = getChunk
+module.exports.chunkPosition = chunkPosition
 
-function getChunk(x, z) {
+function chunkPosition(x, z) {
   return [x >> 4, z >> 4]
 }
 
 function RegionRenderer(region, options) {
   this.region = region
   this.options = options
-  this.load()
 }
 
-RegionRenderer.prototype.load = function() {
-  var chunk, e, maxx, maxz, minx, minz, region, size, x, z, _i, _j;
-  var chunkPos = getChunk(this.options.x, this.options.z)
-  
-  size = this.options.size * 1;
-  minx = (chunkPos[0]) - size;
-  minz = (chunkPos[1]) - size;
-  maxx = (chunkPos[0]) + size;
-  maxz = (chunkPos[1]) + size;
-  for (x = _i = minx; minx <= maxx ? _i <= maxx : _i >= maxx; x = minx <= maxx ? ++_i : --_i) {
-    for (z = _j = minz; minz <= maxz ? _j <= maxz : _j >= maxz; z = minz <= maxz ? ++_j : --_j) {
-      region = this.region;
-      if (true || this.region.hasChunk(x, z)) {
-        try {
-          chunk = region.getChunk(x, z);
-          if (chunk != null) {
-            this.loadChunk(chunk, x, z, this.options.onVoxel);
-          } else {
-            console.log('chunk at ' + x + ',' + z + ' is undefined');
-          }
-        } catch (_error) {
-          e = _error;
-          console.log(e.message);
-          console.log(e.stack);
-        }
-      }
+RegionRenderer.prototype.loadAll = function() {
+  var x = this.region.x
+  var z = this.region.z
+  var minx = x * 32
+  var minz = z * 32
+  var maxx = (x + 1) * 32 - 1
+  var maxz = (z + 1) * 32 - 1
+  for (var x = minx; x <= maxx; x++ ) {
+    for (var z = minz; z <= maxz; z++ ) {
+      this.loadChunk(x, z)
     }
   }
-  return
-};
+}
+
+RegionRenderer.prototype.loadNearby = function(x, z, size) {
+  var chunkPos = chunkPosition(x, z)
+  var minx = (chunkPos[0]) - size;
+  var minz = (chunkPos[1]) - size;
+  var maxx = (chunkPos[0]) + size;
+  var maxz = (chunkPos[1]) + size;
+  for (var x = minx; x <= maxx; x++ ) {
+    for (var z = minz; z <= maxz; z++ ) {
+      this.loadChunk(x, z)
+    }
+  }
+}
 
 RegionRenderer.prototype.initializeChunk = function(chunk, chunkX, chunkZ) {
   var options = {
@@ -59,20 +54,32 @@ RegionRenderer.prototype.initializeChunk = function(chunk, chunkX, chunkZ) {
   return mcChunk(options)
 }
 
-RegionRenderer.prototype.loadChunk = function(chunk, chunkX, chunkZ, onVoxel) {
-  var attributes, chunkSize, colorArray, count, cube, e, f, geometry, i, index, indices, left, mat, material, mesh, options, start, startedIndex, uvArray, vertexIndexArray, vertexPositionArray, verts, view, _i, _j, _k, _l, _len, _m, _n, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
-
-  var view = this.initializeChunk(chunk, chunkX, chunkZ)
-  var voxels = []
-  try {
-    view.extractChunk(function(x, y, z, type) {
-      onVoxel(x, y, z, type, chunkX, chunkZ)
-    });
-  } catch (_error) {
-    e = _error;
-    console.log("Error in extractChunk");
-    console.log(e.message);
-    console.log(e.stack);
+RegionRenderer.prototype.loadChunk = function(chunkX, chunkZ, onVoxel) {
+  var self = this
+  var region = this.region;
+  if (true || this.region.hasChunk(chunkX, chunkZ)) {
+    try {
+      var chunk = region.getChunk(chunkX, chunkZ);
+      if (chunk != null) {
+        var view = this.initializeChunk(chunk, chunkX, chunkZ)
+        var voxels = []
+        try {
+          view.extractChunk(function(x, y, z, type) {
+            self.options.onVoxel(x, y, z, type, chunkX, chunkZ)
+          });
+        } catch (_error) {
+          var e = _error;
+          console.log("Error in extractChunk");
+          console.log(e.message);
+          console.log(e.stack);
+        }
+      } else {
+        console.log('chunk at ' + chunkX + ',' + chunkZ + ' is undefined');
+      }
+    } catch (_error) {
+      e = _error;
+      console.log(e.message);
+      console.log(e.stack);
+    }
   }
-  
 };
