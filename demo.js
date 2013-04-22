@@ -1,4 +1,4 @@
-var render = require('./')
+var mca = require('./')
 var mcRegion = require('minecraft-region')
 var fs = require('fs')
 var binaryXHR = require('binary-xhr')
@@ -6,9 +6,9 @@ var fly = require('voxel-fly')
 
 var textures = "http://commondatastorage.googleapis.com/voxeltextures/painterly/"
 
-var materials = [["adminium"], "stationary_lava", "stone", "dirt", "redstone_ore", "coal_ore", "gravel", "iron_ore", "double_stone_slab", "grass", "sandstone", "stone_slab", "stone_pressure_plate", "brick", "glass", "iron_door", "wall_sign", "nether_brick_fence", "glowstone", "torch", "wool", "glass_pane", "wood", "wooden_stairs", "bookshelf", "ladder", "nether_brick_stairs", "wooden_plank", "fence", "stone_brick_stairs", "workbench", "wooden_door", "jukebox", "stone_brick", "chest", "iron_block", "furnace", "brick_stairs", "wooden_pressure_plate", "cobblestone", "clay", "fence_gate", "stationary_water", "minecart_track", "powered_rail", "colored_wool", "leaves", "lapis_lazuli_ore", "gold_ore", "obsidian", "brown_mushroom", "redstone_torch_on", "moss_stone", "monster_spawner", "diamond_ore", "signpost", "gold_block"]
+var materials = [["adminium"], "stationary_lava", "stone", "dirt", "redstone_ore", "coal_ore", "gravel", "iron_ore", "double_stone_slab", "grass", "sandstone", "stone_slab", "stone_pressure_plate", "brick", "glass", "iron_door", "wall_sign", "nether_brick_fence", "glowstone", "torch", "wool", "glass_pane", "wood", "wooden_stairs", "bookshelf", "ladder", "nether_brick_stairs", "wooden_plank", "fence", "stone_brick_stairs", "workbench", "wooden_door", "jukebox", "stone_brick", "chest", "iron_block", "furnace", "brick_stairs", "wooden_pressure_plate", "cobblestone", "clay", "fence_gate", "stationary_water", "minecart_track", "powered_rail", "colored_wool", "leaves", "lapis_lazuli_ore", "gold_ore", "obsidian", "brown_mushroom", "redstone_torch_on", "moss_stone", "monster_spawner", "diamond_ore", "signpost", "gold_block", "white_wool", "orange_wool", "magenta_wool", "light_blue_wool", "yellow_wool", "lime_wool", "pink_wool", "dark_gray_wool", "light_gray_wool", "light_blue_wool", "purple_wool", "dark_blue_wool", "brown_wool", "green_wool", "red_wool", "black_wool"]
 
-var pos = [425, 101, -263]
+var pos = [108, 71, 276]
 var regionX = Math.floor((pos[0] >> 4) / 32)
 var regionZ = Math.floor((pos[2] >> 4) / 32)
 var regionFile = 'worlds/nyc/r.' + regionX + '.' + regionZ + '.mca'
@@ -17,7 +17,7 @@ var game = require('voxel-hello-world')({
   generate: function(x, y, z) { return 0; },
   texturePath: textures,
   playerSkin: textures + '../player.png',
-  chunkDistance: 4,
+  chunkDistance: 6,
   arrayType: Float32Array,
   worldOrigin: pos,
   materials: materials
@@ -31,15 +31,20 @@ window.types = {}
 game.controls.target().avatar.position.copy({x: pos[0], y: pos[1], z: pos[2]})
 game.once('tick', function() {
   binaryXHR(regionFile, function(err, data) {
-    if (err) return console.error(err)
-    var region = mcRegion(data)
+    if (err) return console.error('xhr err', err)
+    var region = mcRegion(data, regionX, regionZ)
     window.region = region
-    var opts = {ymin: 0, onVoxel: function(x, y, z, type, chunkX, chunkZ) {
+    var opts = {ymin: 0, onVoxel: function(x, y, z, block, chunkX, chunkZ) {
+      var type = block.type
       if (window.types[type]) window.types[type]++
       else window.types[type] = 1
+      if (type === "colored_wool") {
+        type = block.data
+      }
       game.setBlock([(chunkX * 16) + x, y, (chunkZ * 16) + z], type)
     }}
-    var view = render(region, opts).loadNearby(pos[0], pos[2], game.chunkDistance)
+    var view = mca(region, opts)
+    view.loadNearby(pos, game.chunkDistance)
     window.view = view
   })
 })
