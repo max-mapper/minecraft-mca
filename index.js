@@ -71,18 +71,14 @@ RegionRenderer.prototype.initializeChunk = function(chunk, chunkX, chunkZ) {
 
 RegionRenderer.prototype.loadChunk = function(chunkX, chunkZ) {
   var self = this
-  var region = this.region
-  var hasChunk = !this.region.outOfBounds(chunkX, chunkZ)
-  if (hasChunk) {
-    var chunk = region.getChunk(chunkX, chunkZ)
-    if (chunk != null) {
-      var view = this.initializeChunk(chunk, chunkX, chunkZ)
-      var voxels = []
-      view.extractChunk(function(x, y, z, block) {
-        self.options.onVoxel(x, y, z, block, chunkX, chunkZ)
-      })
-    } else {
-      return false
-    }
+  var chunk = this.region.getChunk(chunkX, chunkZ)
+  if (chunk != null) {
+    var view = this.initializeChunk(chunk, chunkX, chunkZ)
+    var voxels = []
+    view.extractChunk(function(x, y, z, block) {
+      self.options.onVoxel(x, y, z, block, chunkX, chunkZ)
+    })
+  } else {
+    return false
   }
 }
