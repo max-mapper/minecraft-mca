@@ -1,6 +1,6 @@
 {
   "name": "minecraft-mca",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "minecraft .mca region data file pure js parser",
   "main": "index.js",
   "scripts": {
