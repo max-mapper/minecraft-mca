@@ -71,6 +71,7 @@ RegionRenderer.prototype.initializeChunk = function(chunk, chunkX, chunkZ) {
 
 RegionRenderer.prototype.loadChunk = function(chunkX, chunkZ) {
   var self = this
+  if (this.options.onChunk) this.options.onChunk(chunkX, chunkZ)
   var chunk = this.region.getChunk(chunkX, chunkZ)
   if (chunk != null) {
     var view = this.initializeChunk(chunk, chunkX, chunkZ)
