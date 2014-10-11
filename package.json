@@ -1,6 +1,6 @@
 {
   "name": "minecraft-mca",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "minecraft .mca region data file pure js parser",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "author": "Jason Livesay <ithkuil@gmail.com>, Max Ogden <max@maxogden.com>",
   "license": "BSD",
   "dependencies": {
-    "minecraft-nbt": "~0.0.2",
+    "minecraft-nbt": "~0.0.3",
     "minecraft-chunk": "~0.3.0"
   },
   "devDependencies": {
